@@ -6,8 +6,11 @@ class Grid():
     def __init__(self, shape, boxsize):
         self.grid = np.zeros(shape, dtype = np.float32)
         self.box = boxsize
-        self.is_overdensity = False
+        self.is_overdensity = False # used to avoid accidentally normalizing twice
         return
+    
+    def getBox(self):
+        return self.box
     
     def getShape(self):
         return self.grid.shape
@@ -17,6 +20,17 @@ class Grid():
             return self.grid
         else:
             return (self.grid / np.mean(self.grid)) - 1
+
+    def clear(self):
+        self.grid = np.zeros(self.getShape(), dtype = np.float32)
+        return
+        
+    def getNodeDist(self):
+        return self.getBox() / self.getShape()[0]
+    
+    def getRadiiGrid(self, center_pos):
+        # calculates the radius of each node from a particular position
+        return
 
     # METHODS FOR ALTERING THE MASS GRID ############################
     
@@ -35,8 +49,8 @@ class Grid():
 
     def _CICW(self, pos, masses):            
 
-        boxsize = self.box
-        ptls = len(masses); coord = len(self.grid.shape); dims = self.grid.shape[0]
+        boxsize = self.getBox()
+        ptls = len(masses); coord = len(self.getShape()); dims = self.getShape()[0]
         inv_cell_size = dims/boxsize
         
         index_d = np.zeros(coord, dtype=np.int64)
