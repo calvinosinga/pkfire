@@ -7,6 +7,7 @@ class Grid():
         self.grid = np.zeros(shape, dtype = np.float32)
         self.box = boxsize
         self.is_overdensity = False # used to avoid accidentally normalizing twice
+        
         return
     
     def getBox(self):
@@ -25,12 +26,6 @@ class Grid():
         self.grid = np.zeros(self.getShape(), dtype = np.float32)
         return
         
-    def getNodeDist(self):
-        return self.getBox() / self.getShape()[0]
-    
-    def getRadiiGrid(self, center_pos):
-        # calculates the radius of each node from a particular position
-        return
 
     # METHODS FOR ALTERING THE MASS GRID ############################
     
@@ -90,3 +85,15 @@ class Grid():
             
 
         return
+
+    def _NGP(self):
+        return
+        
+    def _plot(self, ax, zmin, zmax, cmap, norm, imshow_kw):
+        edges = np.linspace(0, self.getBox(), self.getShape()[0])
+        volume = (edges[zmax] - edges[zmin]) * edges[1]**2
+        slc_sum = np.sum(self.grid[:, :, zmin:zmax], axis = 2) / volume
+        ax.imshow(slc_sum, norm = norm, cmap = cmap, **imshow_kw)
+
+        return
+

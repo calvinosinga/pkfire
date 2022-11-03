@@ -47,6 +47,7 @@ GM = 'GroupMass'
 GFS = 'GroupFirstSub'
 GM500 = 'Group_M_Crit500'
 GR500 = 'Group_R_Crit500'
+GPOS = 'GroupPos'
 class Illustris():
 
     def __init__(self, simpath, snapshot, add_sub_fields = [], add_grp_fields = []):
@@ -58,7 +59,7 @@ class Illustris():
         head = il.groupcat.loadHeader(simpath, snapshot)
         subs['SubhaloMassType'] *= 1e10/head['HubbleParam']
         subs['SubhaloPos'] /= 1e3
-        fields = [GM, GFS, GM500, GR500]
+        fields = [GM, GFS, GPOS, GM500, GR500]
         fields.extend(add_grp_fields)
         grps = il.groupcat.loadHalos(simpath, snapshot, fields = fields)
         grps[GM] *= 1e10/head['HubbleParam']
@@ -89,6 +90,9 @@ class Illustris():
 
     def getPos(self):
         return self.subdata[POS]
+    
+    def getGroupPos(self):
+        return self.grpdata[GPOS]
     
     def getMass(self, idx = 4):
         return self.subdata[SMT][:, idx]
